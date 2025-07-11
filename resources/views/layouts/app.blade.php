@@ -135,7 +135,7 @@
                                 <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="bi bi-speedometer2"></i> {{ __('app.dashboard') }}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('books.index') }}"><i class="bi bi-speedometer2"></i> {{ __('app.dashboard') }}</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> {{ __('app.profile') }}</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> {{ __('app.settings') }}</a></li>
                                 <li><hr class="dropdown-divider"></li>

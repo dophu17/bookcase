@@ -131,8 +131,69 @@
         </div>
     </div>
 
-    <!-- Recent Activity -->
+    <!-- manager books -->
     <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{{ route('books.create') }}" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> {{ __('app.create_book') }}
+                </a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-book"></i> {{ __('app.manager_books') }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>    
+                                    <th>{{ __('app.book_name') }}</th>
+                                    <th>{{ __('app.author') }}</th>
+                                    <th>{{ __('app.category') }}</th>
+                                    <th>{{ __('app.read_status') }}</th>
+                                    <th>{{ __('app.publisher') }}</th>
+                                    <th>{{ __('app.total_pages') }}</th>    
+                                    <th>{{ __('app.cover_price') }}</th>
+                                    <th>{{ __('app.country') }}</th>
+                                    <th>{{ __('app.actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody> 
+                                @foreach ($books as $book)
+                                    <tr>
+                                        <td>{{ $book->name }}</td>
+                                        <td>{{ optional($book->author)->name }}</td>
+                                        <td>{{ optional($book->category)->name }}</td>
+                                        <td>{{ $book->read_status }}</td>   
+                                        <td>{{ $book->publisher }}</td>
+                                        <td>{{ $book->total_pages }}</td>
+                                        <td>{{ $book->cover_price }}</td>
+                                        <td>{{ $book->country }}</td>
+                                        <td>
+                                            <a href="{{ route('books.edit', $book) }}" class="btn btn-sm btn-primary"> 
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline-block" onsubmit="return confirm('{{ __('app.confirm_delete') }}')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>   
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row mt-5">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
