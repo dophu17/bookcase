@@ -1,0 +1,80 @@
+<?php
+
+return [
+    // Navigation
+    'home' => 'Trang chủ',
+    'books' => 'Sách',
+    'authors' => 'Tác giả',
+    'about' => 'Giới thiệu',
+    'contact' => 'Liên hệ',
+    'login' => 'Đăng nhập',
+    'register' => 'Đăng ký',
+    'logout' => 'Đăng xuất',
+    'dashboard' => 'Dashboard',
+    'profile' => 'Hồ sơ',
+    'settings' => 'Cài đặt',
+
+    // Home page
+    'welcome_to_bookcase' => 'Chào mừng đến với Bookcase',
+    'home_subtitle' => 'Hệ thống quản lý sách trực tuyến hiện đại, giúp bạn dễ dàng tìm kiếm, quản lý và chia sẻ bộ sưu tập sách của mình.',
+    'login_now' => 'Đăng nhập ngay',
+    'register_free' => 'Đăng ký miễn phí',
+    'features' => 'Tính năng nổi bật',
+    'features_subtitle' => 'Khám phá những tính năng tuyệt vời mà Bookcase mang lại cho bạn',
+    'smart_search' => 'Tìm kiếm thông minh',
+    'smart_search_desc' => 'Tìm kiếm sách nhanh chóng với bộ lọc thông minh theo tên, tác giả, thể loại và nhiều tiêu chí khác.',
+    'collection_management' => 'Quản lý bộ sưu tập',
+    'collection_management_desc' => 'Tạo và quản lý bộ sưu tập sách cá nhân, phân loại theo sở thích và mục đích sử dụng.',
+    'easy_sharing' => 'Chia sẻ dễ dàng',
+    'easy_sharing_desc' => 'Chia sẻ bộ sưu tập sách với bạn bè và cộng đồng, tạo ra không gian học tập và thảo luận.',
+    'books_in_library' => 'Sách trong thư viện',
+    'authors_count' => 'Tác giả',
+    'users_count' => 'Người dùng',
+    'collections_count' => 'Bộ sưu tập',
+    'start_journey' => 'Bắt đầu hành trình khám phá sách ngay hôm nay',
+    'start_journey_desc' => 'Tham gia cộng đồng Bookcase để khám phá thế giới sách vô tận và kết nối với những người yêu sách khác.',
+
+    // Authentication
+    'welcome_back' => 'Chào mừng bạn trở lại với Bookcase',
+    'email_address' => 'Địa chỉ email',
+    'password' => 'Mật khẩu',
+    'confirm_password' => 'Xác nhận mật khẩu',
+    'remember_me' => 'Ghi nhớ đăng nhập',
+    'forgot_password' => 'Quên mật khẩu?',
+    'dont_have_account' => 'Chưa có tài khoản?',
+    'already_have_account' => 'Đã có tài khoản?',
+    'register_now' => 'Đăng ký ngay',
+    'login_here' => 'Đăng nhập',
+    'full_name' => 'Họ và tên',
+    'agree_terms' => 'Tôi đồng ý với điều khoản sử dụng và chính sách bảo mật',
+    'terms_of_service' => 'điều khoản sử dụng',
+    'privacy_policy' => 'chính sách bảo mật',
+
+    // Dashboard
+    'welcome' => 'Chào mừng',
+    'total_books' => 'Tổng sách',
+    'read_books' => 'Đã đọc',
+    'reading_books' => 'Đang đọc',
+    'collections' => 'Bộ sưu tập',
+    'quick_actions' => 'Thao tác nhanh',
+    'add_new_book' => 'Thêm sách mới',
+    'add_book_desc' => 'Thêm sách vào bộ sưu tập cá nhân của bạn',
+    'search_books' => 'Tìm kiếm sách',
+    'search_books_desc' => 'Tìm kiếm sách trong thư viện',
+    'manage_collections' => 'Quản lý bộ sưu tập',
+    'manage_collections_desc' => 'Tạo và quản lý các bộ sưu tập sách',
+    'recent_activity' => 'Hoạt động gần đây',
+    'no_activity' => 'Chưa có hoạt động nào',
+
+    // Footer
+    'bookcase_description' => 'Hệ thống quản lý sách trực tuyến, giúp bạn dễ dàng tìm kiếm và quản lý bộ sưu tập sách của mình.',
+    'quick_links' => 'Liên kết nhanh',
+    'contact_info' => 'Liên hệ',
+    'all_rights_reserved' => 'Tất cả quyền được bảo lưu.',
+
+    // Messages
+    'login_success' => 'Đăng nhập thành công!',
+    'register_success' => 'Đăng ký thành công! Chào mừng bạn đến với Bookcase!',
+    'logout_success' => 'Đăng xuất thành công!',
+    'login_error' => 'Thông tin đăng nhập không chính xác.',
+]; 
