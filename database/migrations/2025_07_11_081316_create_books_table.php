@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('author_id')->nullable();
+            $table->string('author_name')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('category_id')->nullable();
             $table->enum('read_status', ['readed', 'reading', 'not_read'])->default('not_read');
             $table->string('publisher')->nullable();

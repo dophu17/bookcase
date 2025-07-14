@@ -20,4 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::resource('books', App\Http\Controllers\BookController::class);
+// Protected routes - require authentication
+Route::middleware('auth')->group(function () {
+    Route::resource('books', App\Http\Controllers\BookController::class);
+});

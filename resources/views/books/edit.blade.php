@@ -16,49 +16,68 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.book_name') }}</label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name', $book->name) }}" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $book->name) }}">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.author') }}</label>
-                            <select name="author_id" class="form-select" required>
-                                <option value="">-- {{ __('app.choose_author') }} --</option>
-                                @foreach($authors as $author)
-                                    <option value="{{ $author->id }}" {{ old('author_id', $book->author_id) == $author->id ? 'selected' : '' }}>{{ $author->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="author_name" class="form-control @error('author_name') is-invalid @enderror" value="{{ old('author_name', $book->author_name) }}">
+                            @error('author_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.category') }}</label>
-                            <select name="category_id" class="form-select" required>
+                            <select name="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                 <option value="">-- {{ __('app.choose_category') }} --</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
+                            @error('category_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.read_status') }}</label>
-                            <select name="read_status" class="form-select" required>
+                            <select name="read_status" class="form-select @error('read_status') is-invalid @enderror">
                                 <option value="not_read" {{ old('read_status', $book->read_status) == 'not_read' ? 'selected' : '' }}>{{ __('app.not_read') }}</option>
                                 <option value="reading" {{ old('read_status', $book->read_status) == 'reading' ? 'selected' : '' }}>{{ __('app.reading') }}</option>
                                 <option value="readed" {{ old('read_status', $book->read_status) == 'readed' ? 'selected' : '' }}>{{ __('app.readed') }}</option>
                             </select>
+                            @error('read_status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.publisher') }}</label>
-                            <input type="text" name="publisher" class="form-control" value="{{ old('publisher', $book->publisher) }}">
+                            <input type="text" name="publisher" class="form-control @error('publisher') is-invalid @enderror" value="{{ old('publisher', $book->publisher) }}">
+                            @error('publisher')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.total_pages') }}</label>
-                            <input type="number" name="total_pages" class="form-control" value="{{ old('total_pages', $book->total_pages) }}">
+                            <input type="number" name="total_pages" class="form-control @error('total_pages') is-invalid @enderror" value="{{ old('total_pages', $book->total_pages) }}">
+                            @error('total_pages')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.cover_price') }}</label>
-                            <input type="number" step="0.01" name="cover_price" class="form-control" value="{{ old('cover_price', $book->cover_price) }}">
+                            <input type="number" step="0.01" name="cover_price" class="form-control @error('cover_price') is-invalid @enderror" value="{{ old('cover_price', $book->cover_price) }}">
+                            @error('cover_price')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('app.country') }}</label>
-                            <input type="text" name="country" class="form-control" value="{{ old('country', $book->country) }}">
+                            <input type="text" name="country" class="form-control @error('country') is-invalid @enderror" value="{{ old('country', $book->country) }}">
+                            @error('country')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('books.index') }}" class="btn btn-secondary">{{ __('app.back') }}</a>

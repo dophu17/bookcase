@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
+        
+        // Redirect unauthenticated users to homepage instead of login page
+        $middleware->redirectTo('/');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

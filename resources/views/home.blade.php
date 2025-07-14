@@ -11,13 +11,19 @@
                 <h1 class="display-4 fw-bold mb-4">{{ __('app.welcome_to_bookcase') }}</h1>
                 <p class="lead mb-4">{{ __('app.home_subtitle') }}</p>
                 <div class="d-flex gap-3">
-                    <a href="{{ route('login') }}" class="btn btn-light btn-lg">
-                        <i class="bi bi-box-arrow-in-right"></i> {{ __('app.login_now') }}
-                    </a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg">
-                            <i class="bi bi-person-plus"></i> {{ __('app.register_free') }}
+                    @if(Auth::check())
+                        <a href="{{ route('books.create') }}" class="btn btn-light btn-lg">
+                            <i class="bi bi-plus"></i> {{ __('app.add_new_book') }}
                         </a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-light btn-lg">
+                            <i class="bi bi-box-arrow-in-right"></i> {{ __('app.login_now') }}
+                        </a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-person-plus"></i> {{ __('app.register_free') }}
+                            </a>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -118,18 +124,50 @@
 <section class="py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
+            <div class="col-lg-12 text-center">
                 <h2 class="display-6 fw-bold mb-4">{{ __('app.start_journey') }}</h2>
                 <p class="lead mb-4">{{ __('app.start_journey_desc') }}</p>
-                <div class="d-flex gap-3 justify-content-center">
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
-                        <i class="bi bi-box-arrow-in-right"></i> {{ __('app.login') }}
-                    </a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-outline-primary btn-lg">
-                            <i class="bi bi-person-plus"></i> {{ __('app.register') }}
-                        </a>
-                    @endif
+                <div class="justify-content-center">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-plus-circle text-primary" style="font-size: 3rem;"></i>
+                                    <h5 class="card-title mt-3">{{ __('app.add_new_book') }}</h5>
+                                    <p class="card-text">{{ __('app.add_book_desc') }}</p>
+                                    <a href="{{ route('books.create') }}" class="btn btn-primary">
+                                        <i class="bi bi-plus"></i> {{ __('app.add_new_book') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-search text-success" style="font-size: 3rem;"></i>
+                                    <h5 class="card-title mt-3">{{ __('app.search_books') }}</h5>
+                                    <p class="card-text">{{ __('app.search_books_desc') }}</p>
+                                    <a href="{{ route('books.index') }}" class="btn btn-success">
+                                        <i class="bi bi-search"></i> {{ __('app.search_books') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-collection text-info" style="font-size: 3rem;"></i>
+                                    <h5 class="card-title mt-3">{{ __('app.manage_collections') }}</h5>
+                                    <p class="card-text">{{ __('app.manage_collections_desc') }}</p>
+                                    <a href="{{ route('books.index') }}" class="btn btn-info">
+                                        <i class="bi bi-collection"></i> {{ __('app.manage_collections') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
