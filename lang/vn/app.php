@@ -65,6 +65,12 @@ return [
     'manage_collections_desc' => 'Tạo và quản lý các bộ sưu tập sách',
     'recent_activity' => 'Hoạt động gần đây',
     'no_activity' => 'Chưa có hoạt động nào',
+    'total_book_cost' => 'Tổng chi phí sách',
+    'total_authors' => 'Tác giả',
+    'total_categories' => 'Thể loại',
+    'total_countries' => 'Quốc gia',
+    'most_category' => 'Thể loại nhiều nhất',
+    'most_country' => 'Quốc gia nhiều nhất',
 
     // Footer
     'bookcase_description' => 'Hệ thống quản lý sách trực tuyến, giúp bạn dễ dàng tìm kiếm và quản lý bộ sưu tập sách của mình.',

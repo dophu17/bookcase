@@ -91,7 +91,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Tổng chi phí sách') }}</div>
+                    <div class="fw-bold">{{ __('app.total_book_cost') }}</div>
                     <div>{{ number_format($totalCost, 0, ',', '.') }} đ</div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Tác giả') }}</div>
+                    <div class="fw-bold">{{ __('app.total_authors') }}</div>
                     <div>{{ $totalAuthors }}</div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Thể loại') }}</div>
+                    <div class="fw-bold">{{ __('app.total_categories') }}</div>
                     <div>{{ $totalCategories }}</div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Quốc gia') }}</div>
+                    <div class="fw-bold">{{ __('app.total_countries') }}</div>
                     <div>{{ $totalCountries }}</div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Thể loại nhiều nhất') }}</div>
+                    <div class="fw-bold">{{ __('app.most_category') }}</div>
                     <div>{{ $mostCategoryName ?? '-' }}</div>
                 </div>
             </div>
@@ -131,7 +131,7 @@
         <div class="col-md-2 col-6 mb-2">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <div class="fw-bold">{{ __('Quốc gia nhiều nhất') }}</div>
+                    <div class="fw-bold">{{ __('app.most_country') }}</div>
                     <div>{{ $mostCountryName ?? '-' }}</div>
                 </div>
             </div>

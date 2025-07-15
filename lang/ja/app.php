@@ -65,6 +65,12 @@ return [
     'manage_collections_desc' => '本のコレクションを作成・管理',
     'recent_activity' => '最近の活動',
     'no_activity' => 'まだ活動がありません',
+    'total_book_cost' => '書籍の総費用',
+    'total_authors' => '著者',
+    'total_categories' => 'カテゴリ',
+    'total_countries' => '国',
+    'most_category' => '最多カテゴリ',
+    'most_country' => '最多国',
 
     // Footer
     'bookcase_description' => 'オンライン書籍管理システム。本の検索、管理、共有を簡単に行えます。',
