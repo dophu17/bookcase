@@ -27,4 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
     Route::get('/settings', [AuthController::class, 'showSettings'])->name('settings');
     Route::post('/settings', [AuthController::class, 'updateSettings'])->name('settings.update');
+    Route::post('/analyze-book-image', [App\Http\Controllers\BookController::class, 'analyzeBookImage'])->name('analyze-book-image');
 });

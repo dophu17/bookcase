@@ -151,6 +151,13 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center">
+                                <form action="{{ route('analyze-book-image') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" name="book_image" class="form-control" accept="image/*">
+                                    <button type="submit" class="btn btn-outline-primary">
+                                        <i class="bi bi-upload"></i> {{ __('app.upload_image') }}
+                                    </button>
+                                </form>
                                 <form action="" method="GET" class="d-flex" style="max-width: 400px;">
                                     <input type="text" name="search" class="form-control me-2" placeholder="{{ __('app.search_books') }}" value="{{ request('search') }}">
                                     <button type="submit" class="btn btn-outline-primary">
