@@ -101,4 +101,10 @@ return [
     'book_updated' => 'Cập nhật sách thành công!',
     'book_deleted' => 'Xóa sách thành công!',
     'book_name' => 'Tên sách',
+    'profile_updated' => 'Cập nhật hồ sơ thành công!',
+    'save_changes' => 'Lưu thay đổi',
+    'name' => 'Họ và tên',
+    'daily_reminder_time' => 'Nhắc nhở đọc sách lúc',
+    'spending_limit' => 'Nhắc khi tổng tiền mua sách lớn hơn',
+    'settings_updated' => 'Cập nhật cài đặt thành công!',
 ]; 

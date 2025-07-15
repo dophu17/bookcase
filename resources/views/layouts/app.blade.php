@@ -136,8 +136,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('books.index') }}"><i class="bi bi-speedometer2"></i> {{ __('app.collections') }}</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> {{ __('app.profile') }}</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> {{ __('app.settings') }}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person"></i> {{ __('app.profile') }}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('settings') }}"><i class="bi bi-gear"></i> {{ __('app.settings') }}</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

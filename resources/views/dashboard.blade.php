@@ -197,7 +197,7 @@
                                         </td>   
                                         <td>{{ $book->publisher }}</td>
                                         <td>{{ $book->total_pages }}</td>
-                                        <td>{{ $book->cover_price }}</td>
+                                        <td>{{ number_format($book->cover_price, 0, ',', '.') }} đ</td>
                                         <td>{{ $book->country }}</td>
                                         <td>
                                             <div class="d-flex gap-1">

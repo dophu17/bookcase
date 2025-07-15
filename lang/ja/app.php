@@ -101,4 +101,10 @@ return [
     'book_updated' => '本が正常に更新されました！',
     'book_deleted' => '本が正常に削除されました！',
     'book_name' => '書名',
+    'profile_updated' => 'プロフィールが更新されました！',
+    'save_changes' => '変更を保存',
+    'name' => '氏名',
+    'daily_reminder_time' => '読書リマインダー時刻',
+    'spending_limit' => '購入金額上限',
+    'settings_updated' => '設定が更新されました！',
 ]; 

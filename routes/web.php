@@ -23,4 +23,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Protected routes - require authentication
 Route::middleware('auth')->group(function () {
     Route::resource('books', App\Http\Controllers\BookController::class);
+    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+    Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/settings', [AuthController::class, 'showSettings'])->name('settings');
+    Route::post('/settings', [AuthController::class, 'updateSettings'])->name('settings.update');
 });

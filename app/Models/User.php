@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Book::class);
     }
+
+    public function setting()
+    {
+        return $this->hasOne(Setting::class);
+    }
 }
