@@ -134,9 +134,10 @@ class BookController extends Controller
         $imageAnnotator->close();
 
         $lines = [];
-        $maxArea = 0;
-        $bookName = '';
+        $maxHeight = 0;
+        $bookNameLines = [];
         $authorName = '';
+        $textBlocks = [];
         if ($texts) {
             foreach ($texts as $i => $text) {
                 if ($i == 0) continue; // bỏ qua block tổng
@@ -148,34 +149,47 @@ class BookController extends Controller
                 if (count($vertices) === 4) {
                     $width = abs($vertices[1]->getX() - $vertices[0]->getX());
                     $height = abs($vertices[2]->getY() - $vertices[1]->getY());
-                    $area = $width * $height;
-                    if ($area > $maxArea) {
-                        $maxArea = $area;
-                        $bookName = $desc;
+                    $textBlocks[] = [
+                        'desc' => $desc,
+                        'width' => $width,
+                        'height' => $height,
+                        'area' => $width * $height,
+                        'y' => $vertices[0]->getY(),
+                    ];
+                    if ($height > $maxHeight) {
+                        $maxHeight = $height;
                     }
                 }
                 $lines[] = $desc;
             }
         }
 
-        // Tìm tác giả: đoạn ngắn hơn, có thể chứa từ khóa hoặc nằm gần tên sách
-        if ($bookName && count($lines) > 0) {
-            foreach ($lines as $line) {
-                if (
-                    stripos($line, 'tác giả') !== false ||
-                    stripos($line, 'author') !== false ||
-                    stripos($line, 'by') === 0
-                ) {
-                    $authorName = trim(str_ireplace(['tác giả', 'author', 'by', ':'], '', $line));
-                    break;
-                }
-            }
-            // Nếu không có từ khóa, lấy đoạn ngắn nhất không trùng tên sách
-            if (!$authorName && count($lines) > 1) {
-                $authorName = collect($lines)
-                    ->filter(fn($t) => $t !== $bookName)
-                    ->sortBy(fn($t) => mb_strlen($t))
-                    ->first();
+        // Tìm các dòng có chiều cao lớn nhất (tên sách, có thể nhiều dòng)
+        if ($maxHeight > 0) {
+            $bookNameLines = collect($textBlocks)
+                ->filter(fn($b) => abs($b['height'] - $maxHeight) < 5) // cho phép lệch nhỏ
+                ->sortBy('y') // theo thứ tự trên xuống dưới
+                ->pluck('desc')
+                ->toArray();
+        }
+        $bookName = implode(' ', $bookNameLines);
+
+        // Tìm tác giả: dòng nhỏ hơn, không xuống dòng, gần tên sách nhất
+        if ($bookName && count($textBlocks) > 0) {
+            // Lấy các block nhỏ hơn maxHeight, không trùng tên sách
+            $authorBlocks = collect($textBlocks)
+                ->filter(fn($b) => $b['height'] < $maxHeight - 2 && !in_array($b['desc'], $bookNameLines))
+                ->sortBy(function($b) use ($textBlocks, $bookNameLines) {
+                    // Ưu tiên block nằm ngay dưới dòng tên sách cuối cùng
+                    $lastBookY = collect($textBlocks)
+                        ->filter(fn($tb) => in_array($tb['desc'], $bookNameLines))
+                        ->max('y');
+                    return abs($b['y'] - $lastBookY);
+                })
+                ->pluck('desc')
+                ->toArray();
+            if (count($authorBlocks) > 0) {
+                $authorName = $authorBlocks[0];
             }
         }
 
