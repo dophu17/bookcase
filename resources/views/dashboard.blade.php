@@ -138,6 +138,110 @@
         </div>
     </div>
 
+    
+    <!-- Thêm sách mới bằng AI -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0" style="background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);">
+                <div class="card-header bg-white text-center py-4" style="border-bottom: none;">
+                    <h3 class="mb-1" style="font-weight: 700; letter-spacing: 1px;">
+                        <i class="bi bi-robot text-primary" style="font-size: 2rem;"></i> Thêm sách mới bằng <span class="text-primary">AI</span>
+                    </h3>
+                    <p class="mb-0 text-muted">Chỉ cần chụp ảnh bìa sách, AI sẽ nhận diện và điền thông tin giúp bạn!</p>
+                </div>
+                <div class="card-body p-4">
+                    <form id="ai-book-form" action="{{ route('analyze-book-image') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3 text-center">
+                            <label for="book_image" class="form-label fw-bold">
+                                <i class="bi bi-image text-info" style="font-size: 1.5rem;"></i> Chọn ảnh bìa sách
+                            </label>
+                            <input type="file" name="book_image" id="book_image" class="form-control mx-auto" style="max-width: 350px;" accept="image/*" required>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                            <button type="submit" class="btn btn-gradient-primary btn-lg" style="background: linear-gradient(90deg, #6366f1 0%, #06b6d4 100%); color: white; font-weight: 600;">
+                                <i class="bi bi-stars"></i> Phân tích bằng AI
+                            </button>
+                        </div>
+                    </form>
+                    <div id="ai-book-result" class="mt-4" style="display: none;">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <i class="bi bi-magic text-success me-2" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <span class="fw-bold">AI đã nhận diện:</span><br>
+                                <span id="ai-book-name"></span>
+                                <span id="ai-author-name" class="d-block"></span>
+                            </div>
+                        </div>
+                        <form id="quick-add-book-form" action="{{ route('books.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="name" id="quick-book-name">
+                            <input type="hidden" name="author_name" id="quick-author-name">
+                            <input type="hidden" name="read_status" value="not_read">
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-plus-circle"></i> Thêm vào tủ sách
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="ai-book-loading" class="text-center mt-3" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-2 text-primary">AI đang phân tích ảnh, vui lòng chờ...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('ai-book-form');
+        const resultDiv = document.getElementById('ai-book-result');
+        const loadingDiv = document.getElementById('ai-book-loading');
+        const bookNameSpan = document.getElementById('ai-book-name');
+        const authorNameSpan = document.getElementById('ai-author-name');
+        const quickBookName = document.getElementById('quick-book-name');
+        const quickAuthorName = document.getElementById('quick-author-name');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            resultDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                loadingDiv.style.display = 'none';
+                if (data.book && data.book.name) {
+                    bookNameSpan.textContent = 'Tên sách: ' + data.book.name;
+                    authorNameSpan.textContent = data.book.author_name ? 'Tác giả: ' + data.book.author_name : '';
+                    quickBookName.value = data.book.name;
+                    quickAuthorName.value = data.book.author_name || '';
+                    resultDiv.style.display = 'block';
+                } else {
+                    bookNameSpan.textContent = 'Không nhận diện được tên sách.';
+                    authorNameSpan.textContent = '';
+                    resultDiv.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                loadingDiv.style.display = 'none';
+                bookNameSpan.textContent = 'Đã xảy ra lỗi khi phân tích ảnh.';
+                authorNameSpan.textContent = '';
+                resultDiv.style.display = 'block';
+            });
+        });
+    });
+    </script>
+
     <!-- manager books -->
     <div class="row">
         <div class="col-12">
@@ -151,13 +255,6 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center">
-                                <form action="{{ route('analyze-book-image') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="file" name="book_image" class="form-control" accept="image/*">
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <i class="bi bi-upload"></i> {{ __('app.upload_image') }}
-                                    </button>
-                                </form>
                                 <form action="" method="GET" class="d-flex" style="max-width: 400px;">
                                     <input type="text" name="search" class="form-control me-2" placeholder="{{ __('app.search_books') }}" value="{{ request('search') }}">
                                     <button type="submit" class="btn btn-outline-primary">

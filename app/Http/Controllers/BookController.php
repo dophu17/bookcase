@@ -182,13 +182,13 @@ class BookController extends Controller
         // Insert vào bảng books nếu có tên sách
         $createdBook = null;
         if ($bookName) {
-            $createdBook = Book::create([
+            $createdBook = [
                 'name' => $bookName,
                 'author_name' => $authorName,
                 'user_id' => Auth::id(),
-            ]);
+            ];
         }
-        dd($createdBook);
+
         return response()->json([
             'book' => $createdBook,
             'raw_texts' => $lines,
