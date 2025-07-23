@@ -14,9 +14,9 @@ Một ứng dụng web quản lý sách được xây dựng bằng Laravel vớ
 
 ## Cài đặt
 
-1. **Clone repository**
+1. **Clone repository (branch features/use_OpenAIGPT4o)**
    ```bash
-   git clone <repository-url>
+   git clone -b features/use_OpenAIGPT4o https://github.com/dophu17/bookcase.git
    cd bookcase
    ```
 
@@ -29,21 +29,23 @@ Một ứng dụng web quản lý sách được xây dựng bằng Laravel vớ
 3. **Cấu hình môi trường**
    ```bash
    cp .env.example .env
-   php artisan key:generate
    ```
+   - Chỉnh sửa file `.env` với thông tin database của bạn
+   - Thêm key OpenAI: `OPENAI_API_KEY=your_openai_key` để sử dụng OpenAI
 
 4. **Cấu hình ngôn ngữ**
    - Mặc định: `APP_LOCALE=ja` (tiếng Nhật)
    - Có thể thay đổi thành: `APP_LOCALE=vn` (tiếng Việt)
 
-5. **Cấu hình database**
-   - Chỉnh sửa file `.env` với thông tin database
-   - Chạy migration:
+5. **Chạy migration và seed lại dữ liệu**
    ```bash
-   php artisan migrate
+   php artisan migrate:fresh --seed
    ```
 
-6. **Chạy ứng dụng**
+6. **(Tuỳ chọn) Đăng nhập hệ thống, đăng ký user mới, và chỉnh sửa ID của user = 2 để mapping data mẫu**
+   - Sau khi đăng ký user mới, vào database và chỉnh sửa trường `id` của user thành `2` nếu muốn sử dụng dữ liệu mẫu mapping sẵn.
+
+7. **Chạy ứng dụng**
    ```bash
    php artisan serve
    ```
