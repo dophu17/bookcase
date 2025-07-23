@@ -169,22 +169,26 @@
                             <i class="bi bi-magic text-success me-2" style="font-size: 1.5rem;"></i>
                             <div>
                                 <span class="fw-bold">AI đã nhận diện:</span><br>
-                                <span id="ai-book-name"></span>
-                                <span id="ai-author-name" class="d-block"></span>
+                                <form id="quick-add-book-form" action="{{ route('books.store') }}" method="POST" class="row g-2 align-items-center">
+                                    @csrf
+                                    <div class="col-md-6 mb-2">
+                                        <label for="quick-book-name" class="form-label mb-1">Tên sách</label>
+                                        <input type="text" name="name" id="quick-book-name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="quick-author-name" class="form-label mb-1">Tác giả</label>
+                                        <input type="text" name="author_name" id="quick-author-name" class="form-control">
+                                    </div>
+                                    <input type="hidden" name="read_status" value="not_read">
+                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                    <div class="col-12 d-grid gap-2 col-6 mx-auto mt-2">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-plus-circle"></i> Thêm vào tủ sách
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <form id="quick-add-book-form" action="{{ route('books.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="name" id="quick-book-name">
-                            <input type="hidden" name="author_name" id="quick-author-name">
-                            <input type="hidden" name="read_status" value="not_read">
-                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                            <div class="d-grid gap-2 col-6 mx-auto">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-plus-circle"></i> Thêm vào tủ sách
-                                </button>
-                            </div>
-                        </form>
                     </div>
                     <div id="ai-book-loading" class="text-center mt-3" style="display: none;">
                         <div class="spinner-border text-primary" role="status">
@@ -201,8 +205,6 @@
         const form = document.getElementById('ai-book-form');
         const resultDiv = document.getElementById('ai-book-result');
         const loadingDiv = document.getElementById('ai-book-loading');
-        const bookNameSpan = document.getElementById('ai-book-name');
-        const authorNameSpan = document.getElementById('ai-author-name');
         const quickBookName = document.getElementById('quick-book-name');
         const quickAuthorName = document.getElementById('quick-author-name');
         form.addEventListener('submit', function(e) {
@@ -219,23 +221,22 @@
             })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 loadingDiv.style.display = 'none';
                 if (data.book && data.book.name) {
-                    bookNameSpan.textContent = 'Tên sách: ' + data.book.name;
-                    authorNameSpan.textContent = data.book.author_name ? 'Tác giả: ' + data.book.author_name : '';
                     quickBookName.value = data.book.name;
                     quickAuthorName.value = data.book.author_name || '';
                     resultDiv.style.display = 'block';
                 } else {
-                    bookNameSpan.textContent = 'Không nhận diện được tên sách.';
-                    authorNameSpan.textContent = '';
+                    quickBookName.value = '';
+                    quickAuthorName.value = '';
                     resultDiv.style.display = 'block';
                 }
             })
             .catch(() => {
                 loadingDiv.style.display = 'none';
-                bookNameSpan.textContent = 'Đã xảy ra lỗi khi phân tích ảnh.';
-                authorNameSpan.textContent = '';
+                quickBookName.value = '';
+                quickAuthorName.value = '';
                 resultDiv.style.display = 'block';
             });
         });

@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
 class BookController extends Controller
@@ -121,91 +122,77 @@ class BookController extends Controller
             'book_image' => 'required|image',
         ]);
 
-        $imagePath = $request->file('book_image')->getPathname();
+        $image = $request->file('book_image');
+        $imageData = base64_encode(file_get_contents($image->getPathname()));
 
-        $imageAnnotator = new ImageAnnotatorClient([
-            'credentials' => storage_path('app/google-credentials.json'),
-        ]);
+        $apiKey = env('OPENAI_API_KEY'); // Thêm vào .env
 
-        $image = file_get_contents($imagePath);
-        $response = $imageAnnotator->textDetection($image);
-        $texts = $response->getTextAnnotations();
+        $response = Http::withToken($apiKey)
+            ->timeout(60)
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o', // sử dụng model mới nhất hỗ trợ vision
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => [
+                            [
+                                'type' => 'text',
+                                'text' => 'Hãy phân tích ảnh bìa sách này và trích xuất tên sách, tác giả (nếu có). Trả về kết quả dạng JSON: {"name": "...", "author": "..."}'
+                            ],
+                            [
+                                'type' => 'image_url',
+                                'image_url' => [
+                                    'url' => 'data:image/jpeg;base64,' . $imageData,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'max_tokens' => 300,
+            ]);
 
-        $imageAnnotator->close();
-
-        $lines = [];
-        $maxHeight = 0;
-        $bookNameLines = [];
-        $authorName = '';
-        $textBlocks = [];
-        if ($texts) {
-            foreach ($texts as $i => $text) {
-                if ($i == 0) continue; // bỏ qua block tổng
-                $desc = trim($text->getDescription());
-                if ($desc === '') continue;
-                // Lấy bounding box
-                $poly = $text->getBoundingPoly();
-                $vertices = $poly ? $poly->getVertices() : [];
-                if (count($vertices) === 4) {
-                    $width = abs($vertices[1]->getX() - $vertices[0]->getX());
-                    $height = abs($vertices[2]->getY() - $vertices[1]->getY());
-                    $textBlocks[] = [
-                        'desc' => $desc,
-                        'width' => $width,
-                        'height' => $height,
-                        'area' => $width * $height,
-                        'y' => $vertices[0]->getY(),
-                    ];
-                    if ($height > $maxHeight) {
-                        $maxHeight = $height;
-                    }
+        $result = $response->json();
+        $content = $result['choices'][0]['message']['content'] ?? '';
+        $bookName = null;
+        $authorName = null;
+        $json = json_decode($content, true);
+        if (is_array($json) && (isset($json['name']) || isset($json['author']))) {
+            $bookName = $json['name'] ?? null;
+            $authorName = $json['author'] ?? null;
+        } else {
+            // Nếu không parse được JSON, thử trích xuất JSON từ text trả về
+            if (preg_match('/\{[^}]+\}/', $content, $matches)) {
+                $json2 = json_decode($matches[0], true);
+                if (is_array($json2)) {
+                    $bookName = $json2['name'] ?? null;
+                    $authorName = $json2['author'] ?? null;
                 }
-                $lines[] = $desc;
+            }
+            // Nếu vẫn không có, thử tách thủ công từ text
+            if (!$bookName && preg_match('/Tên sách\s*[:：]?\s*(.+)/iu', $content, $m)) {
+                $bookName = trim($m[1]);
+            }
+            if (!$authorName && preg_match('/Tác giả\s*[:：]?\s*(.+)/iu', $content, $m)) {
+                $authorName = trim($m[1]);
             }
         }
-
-        // Tìm các dòng có chiều cao lớn nhất (tên sách, có thể nhiều dòng)
-        if ($maxHeight > 0) {
-            $bookNameLines = collect($textBlocks)
-                ->filter(fn($b) => abs($b['height'] - $maxHeight) < 5) // cho phép lệch nhỏ
-                ->sortBy('y') // theo thứ tự trên xuống dưới
-                ->pluck('desc')
-                ->toArray();
-        }
-        $bookName = implode(' ', $bookNameLines);
-
-        // Tìm tác giả: dòng nhỏ hơn, không xuống dòng, gần tên sách nhất
-        if ($bookName && count($textBlocks) > 0) {
-            // Lấy các block nhỏ hơn maxHeight, không trùng tên sách
-            $authorBlocks = collect($textBlocks)
-                ->filter(fn($b) => $b['height'] < $maxHeight - 2 && !in_array($b['desc'], $bookNameLines))
-                ->sortBy(function($b) use ($textBlocks, $bookNameLines) {
-                    // Ưu tiên block nằm ngay dưới dòng tên sách cuối cùng
-                    $lastBookY = collect($textBlocks)
-                        ->filter(fn($tb) => in_array($tb['desc'], $bookNameLines))
-                        ->max('y');
-                    return abs($b['y'] - $lastBookY);
-                })
-                ->pluck('desc')
-                ->toArray();
-            if (count($authorBlocks) > 0) {
-                $authorName = $authorBlocks[0];
-            }
-        }
-
-        // Insert vào bảng books nếu có tên sách
-        $createdBook = null;
+        $bookData = null;
         if ($bookName) {
-            $createdBook = [
+            $bookData = [
                 'name' => $bookName,
                 'author_name' => $authorName,
                 'user_id' => Auth::id(),
+                'category_id' => null,
+                'read_status' => 'not_read',
+                'publisher' => null,
+                'total_pages' => null,
+                'cover_price' => null,
+                'country' => null,
             ];
         }
-
         return response()->json([
-            'book' => $createdBook,
-            'raw_texts' => $lines,
+            'book' => $bookData,
+            'openai_response' => $content,
         ]);
     }
 }
