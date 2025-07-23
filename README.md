@@ -32,6 +32,7 @@ Một ứng dụng web quản lý sách được xây dựng bằng Laravel vớ
    ```
    - Chỉnh sửa file `.env` với thông tin database của bạn
    - Thêm key OpenAI: `OPENAI_API_KEY=your_openai_key` để sử dụng OpenAI
+   - Tham khảo tại đây: https://platform.openai.com/api-keys
 
 4. **Cấu hình ngôn ngữ**
    - Mặc định: `APP_LOCALE=ja` (tiếng Nhật)
